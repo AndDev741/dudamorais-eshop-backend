@@ -24,6 +24,7 @@ import com.dudamorais.eshop.domain.ProductRepository;
 import com.dudamorais.eshop.domain.ProductService;
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
 import com.dudamorais.eshop.domain.dto.EditProductDTO;
+import com.dudamorais.eshop.domain.type.ProductType;
 import com.dudamorais.eshop.exceptions.ProductNotFound;
 import com.dudamorais.eshop.exceptions.UserNotFound;
 import com.dudamorais.eshop.user.User;
@@ -43,8 +44,11 @@ public class ProductServiceTest {
 
     UUID productId = UUID.randomUUID();
     UUID userId = UUID.randomUUID();
+    UUID typeId = UUID.randomUUID();
 
-    Product product = new Product(productId, "ProductName", "ProductDescription", 40.50, "Shorts", null, null, null);
+    ProductType type = new ProductType(productId, "type");
+
+    Product product = new Product(productId, "ProductName", "ProductDescription", 40.50, type, null, null, null);
     User user = new User(userId, "user", "123456", null);
 
     @Test
@@ -74,7 +78,7 @@ public class ProductServiceTest {
 
     @Test
     public void shouldCreateSuccessfullyAProduct(){
-        CreateProductDTO createProductDTO = new CreateProductDTO(userId, "product", "Product description", 50.60, "shorts", "url.com", null);
+        CreateProductDTO createProductDTO = new CreateProductDTO(userId, "product", "Product description", 50.60, type, "url.com", null);
         ResponseEntity<Map<String, String>> sucessResponse = ResponseEntity.ok().body(Map.of(
         "success", "Product Created Successfully"));
 
@@ -88,7 +92,7 @@ public class ProductServiceTest {
 
     @Test
     public void shouldEditAProductSuccessfully(){
-        EditProductDTO editProductDTO = new EditProductDTO(productId, "editedName", "editedDescription", 50.50, "pants", "newUrl.com", null);
+        EditProductDTO editProductDTO = new EditProductDTO(productId, "editedName", "editedDescription", 50.50, type, "newUrl.com", null);
         ResponseEntity<Map<String, String>> successResponse = ResponseEntity.ok().body(Map.of("success", "Product edited successfully"));
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));

@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
+import com.dudamorais.eshop.domain.type.ProductType;
 import com.dudamorais.eshop.user.User;
 
 import jakarta.persistence.Column;
@@ -40,7 +41,7 @@ public class Product {
     private double price;
 
     @Column(nullable = false)
-    private String type;
+    private ProductType type;
 
     @Column(nullable = false)
     private String mainPictureUrl;
