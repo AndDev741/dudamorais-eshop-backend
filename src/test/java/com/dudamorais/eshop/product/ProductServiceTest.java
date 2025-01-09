@@ -24,6 +24,8 @@ import com.dudamorais.eshop.domain.ProductRepository;
 import com.dudamorais.eshop.domain.ProductService;
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
 import com.dudamorais.eshop.domain.dto.EditProductDTO;
+import com.dudamorais.eshop.domain.dto.SizeAndQuantityDTO;
+import com.dudamorais.eshop.domain.sizeAndQuantity.SizeAndQuantity;
 import com.dudamorais.eshop.domain.type.ProductType;
 import com.dudamorais.eshop.exceptions.ProductNotFound;
 import com.dudamorais.eshop.exceptions.UserNotFound;
@@ -46,9 +48,10 @@ public class ProductServiceTest {
     UUID userId = UUID.randomUUID();
     UUID typeId = UUID.randomUUID();
 
-    ProductType type = new ProductType(productId, "type");
+    ProductType type = new ProductType("type");
+    List<SizeAndQuantity> sizeAndQuantities = new ArrayList<>(List.of());
 
-    Product product = new Product(productId, "ProductName", "ProductDescription", 40.50, type, null, null, null);
+    Product product = new Product(productId, "ProductName", "ProductDescription", 40.50, type, sizeAndQuantities, null, null, null);
     User user = new User(userId, "user", "123456", null);
 
     @Test
@@ -78,7 +81,9 @@ public class ProductServiceTest {
 
     @Test
     public void shouldCreateSuccessfullyAProduct(){
-        CreateProductDTO createProductDTO = new CreateProductDTO(userId, "product", "Product description", 50.60, type, "url.com", null);
+        ArrayList<SizeAndQuantityDTO> sizeAndQuantityDTOs = new ArrayList<>();
+
+        CreateProductDTO createProductDTO = new CreateProductDTO(userId, "product", "Product description", 50.60, type, sizeAndQuantityDTOs, "url.com", null);
         ResponseEntity<Map<String, String>> sucessResponse = ResponseEntity.ok().body(Map.of(
         "success", "Product Created Successfully"));
 
