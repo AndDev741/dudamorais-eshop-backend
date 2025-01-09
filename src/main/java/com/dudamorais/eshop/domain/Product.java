@@ -1,19 +1,23 @@
 package com.dudamorais.eshop.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
 
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
+import com.dudamorais.eshop.domain.sizeAndQuantity.SizeAndQuantity;
 import com.dudamorais.eshop.domain.type.ProductType;
 import com.dudamorais.eshop.user.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,8 +44,13 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @Column(nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "type_id", nullable = false)
     private ProductType type;
+
+    @Column(nullable = false)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SizeAndQuantity> sizeAndQuantity;
 
     @Column(nullable = false)
     private String mainPictureUrl;
@@ -61,6 +70,11 @@ public class Product {
         setType(createProductDTO.type());
         setMainPictureUrl(createProductDTO.mainPictureUrl());
         setOtherPicturesUrl(createProductDTO.otherPicturesUrl());
+    }
+
+    public void addSizeAndQuantity(SizeAndQuantity sizeAndQuantity){
+        sizeAndQuantity.setProduct(this);
+        this.sizeAndQuantity.add(sizeAndQuantity);
     }
 
 

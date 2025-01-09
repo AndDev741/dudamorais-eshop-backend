@@ -1,8 +1,10 @@
 package com.dudamorais.eshop.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
 import com.dudamorais.eshop.domain.dto.EditProductDTO;
+import com.dudamorais.eshop.domain.sizeAndQuantity.SizeAndQuantity;
 import com.dudamorais.eshop.exceptions.ProductNotFound;
 import com.dudamorais.eshop.exceptions.UserNotFound;
 import com.dudamorais.eshop.user.User;
@@ -37,6 +40,17 @@ public class ProductService {
 
         try{
             Product newProduct = new Product(user, createProductDTO);
+            
+            List<SizeAndQuantity> sizesAndQuantities = createProductDTO.sizeAndQuantities().stream()
+                .map(sizeAndQuantityDTO -> new SizeAndQuantity(
+                    sizeAndQuantityDTO.size(),
+                    sizeAndQuantityDTO.quantity(),
+                    newProduct
+                ))
+                .collect(Collectors.toList());
+
+            newProduct.setSizeAndQuantity(sizesAndQuantities);
+
             productRepository.save(newProduct);
             return ResponseEntity.ok().body(Map.of("success", "Product Created Successfully"));
         }catch(Exception e){
