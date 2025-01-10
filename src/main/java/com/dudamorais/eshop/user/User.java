@@ -6,7 +6,8 @@ import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 
 import com.dudamorais.eshop.domain.Product;
-import com.dudamorais.eshop.user.DTO.UserRegisterDTO;
+import com.dudamorais.eshop.user.DTO.UserDataDTO;
+import com.dudamorais.eshop.user.DTO.UserDataDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -41,7 +42,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ArrayList<Product> products;
 
-    public User(UserRegisterDTO dto){
+    public User(UserDataDTO dto){
         this.username = dto.username();
         this.password = dto.password();
     }

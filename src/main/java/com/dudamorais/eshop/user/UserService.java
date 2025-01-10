@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dudamorais.eshop.security.TokenService;
-import com.dudamorais.eshop.user.DTO.UserRegisterDTO;
+import com.dudamorais.eshop.user.DTO.UserDataDTO;
 
 @Service
 public class UserService {
@@ -21,7 +21,7 @@ public class UserService {
 
     @Autowired TokenService tokenService;
 
-    public ResponseEntity<Map<String, String>> registerUser(UserRegisterDTO dto){
+    public ResponseEntity<Map<String, String>> registerUser(UserDataDTO dto){
         Optional<User> verifyUser = userRepository.findByUsername(dto.username());
 
         if(verifyUser.isPresent()){
@@ -33,4 +33,6 @@ public class UserService {
             return ResponseEntity.ok().body(Map.of("success", "User registered successfully"));
         }
     }
+
+  
 }
