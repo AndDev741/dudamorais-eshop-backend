@@ -1,12 +1,11 @@
 package com.dudamorais.eshop.user;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.annotations.UuidGenerator;
 
 import com.dudamorais.eshop.domain.Product;
-import com.dudamorais.eshop.user.DTO.UserDataDTO;
 import com.dudamorais.eshop.user.DTO.UserDataDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -40,7 +39,7 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ArrayList<Product> products;
+    private List<Product> products;
 
     public User(UserDataDTO dto){
         this.username = dto.username();
