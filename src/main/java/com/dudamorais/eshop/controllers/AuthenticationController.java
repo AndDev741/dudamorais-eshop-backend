@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthenticationController {
     @Autowired
     UserService userService;
+
+    @GetMapping("/verify")
+    public ResponseEntity<Map<String, String>> verifyAuthentication(){
+        return ResponseEntity.ok(Map.of("success", "authenticated"));
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> doRegister(@RequestBody UserDataDTO dto){
