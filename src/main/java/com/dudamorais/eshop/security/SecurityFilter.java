@@ -54,8 +54,10 @@ public class SecurityFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request, response);
         }catch (JWTVerificationException ex) {
-            System.err.println("Erro ao verificar JWT: " + ex.getMessage());
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "JWT inválido ou ausente");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"" + ex.getMessage() + "\"}");
+            return;
         } catch (Exception ex) {
             System.err.println("Erro no filtro: " + ex.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro interno no servidor");
