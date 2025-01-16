@@ -1,6 +1,6 @@
 package com.dudamorais.eshop.domain.type;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.dudamorais.eshop.domain.Product;
-import com.dudamorais.eshop.domain.ProductService;
 import com.dudamorais.eshop.exceptions.TypeNotFound;
 
 @Service
@@ -17,17 +15,12 @@ public class ProductTypeService {
     @Autowired
     private ProductTypeRepository productTypeRepository;
 
-    @Autowired
-    private ProductService productService;
-
     public ProductType getType(UUID typeId){
         return productTypeRepository.findById(typeId).orElseThrow(() -> new TypeNotFound("Product Type not found"));
     }
 
-    public ArrayList<ProductType> getTypes(UUID productId){
-        Product product = productService.getProduct(productId);
-
-        return productTypeRepository.findByProductId(product.getType().getId()).orElseThrow(() -> new TypeNotFound("Types not founded"));
+    public List<ProductType> getTypes(UUID userId){
+        return productTypeRepository.findByUserId(userId).orElseThrow(() -> new TypeNotFound("Types not founded"));
     }
 
     public ResponseEntity<Map<String, String>> createType(String name){

@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 
 import com.dudamorais.eshop.domain.Product;
+import com.dudamorais.eshop.domain.type.ProductType;
 import com.dudamorais.eshop.user.DTO.UserDataDTO;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -40,6 +41,9 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> products;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductType> productTypes;
 
     public User(UserDataDTO dto){
         this.username = dto.username();

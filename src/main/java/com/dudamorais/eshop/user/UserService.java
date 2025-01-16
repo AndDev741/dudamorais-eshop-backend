@@ -45,7 +45,7 @@ public class UserService {
         if(passwordEncoder.matches(dto.password(), user.getPassword())){
             String token = tokenService.generateToken(user);
             addJwtTokenToResponse(response, token);
-            return ResponseEntity.ok().body(Map.of("success", "Login made successfully"));
+            return ResponseEntity.ok().body(Map.of("success", user.getId().toString()));
         }else{
             return ResponseEntity.badRequest().body(Map.of("error", "Username or password wrong"));
         }
