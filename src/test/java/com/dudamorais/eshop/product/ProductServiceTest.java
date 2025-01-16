@@ -52,7 +52,7 @@ public class ProductServiceTest {
     List<SizeAndQuantity> sizeAndQuantities = new ArrayList<>(List.of());
 
     Product product = new Product(productId, "ProductName", "ProductDescription", 40.50, type, sizeAndQuantities, null, null, null);
-    User user = new User(userId, "user", "123456", null);
+    User user = new User(userId, "user", "123456", null, null);
 
     @Test
     public void shouldReturnAProductSuccessfully(){
