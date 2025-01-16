@@ -38,7 +38,8 @@ public class ProductType {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public ProductType(String name){
+    public ProductType(String name, User user){
         setName(name);
+        setUser(user);
     }
 }
