@@ -40,11 +40,11 @@ public class ProductTypeService {
         }
     }
 
-    public ResponseEntity<Map<String, String>> editType(UUID typeId, String newName){
+    public ResponseEntity<Map<String, String>> editType(EditProductTypeDTO dto){
         try{
-            ProductType editType = getType(typeId);
+            ProductType editType = getType(dto.typeId());
 
-            editType.setName(newName);
+            editType.setName(dto.newName());
 
             productTypeRepository.save(editType);
 
