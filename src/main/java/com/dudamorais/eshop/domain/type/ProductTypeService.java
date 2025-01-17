@@ -48,7 +48,7 @@ public class ProductTypeService {
 
             productTypeRepository.save(editType);
 
-            return ResponseEntity.ok(Map.of("sucess", "Type edited successfully"));
+            return ResponseEntity.ok(Map.of("success", "Type edited successfully"));
         }catch (Exception e){
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
