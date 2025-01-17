@@ -48,7 +48,7 @@ public class ProductServiceTest {
     UUID userId = UUID.randomUUID();
     UUID typeId = UUID.randomUUID();
 
-    ProductType type = new ProductType("type");
+    ProductType type = new ProductType("type", new User());
     List<SizeAndQuantity> sizeAndQuantities = new ArrayList<>(List.of());
 
     Product product = new Product(productId, "ProductName", "ProductDescription", 40.50, type, sizeAndQuantities, null, null, null);
