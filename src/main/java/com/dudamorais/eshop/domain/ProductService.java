@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
 import com.dudamorais.eshop.domain.dto.EditProductDTO;
 import com.dudamorais.eshop.domain.sizeAndQuantity.SizeAndQuantity;
+import com.dudamorais.eshop.domain.type.ProductType;
+import com.dudamorais.eshop.domain.type.ProductTypeRepository;
 import com.dudamorais.eshop.exceptions.ProductNotFound;
 import com.dudamorais.eshop.exceptions.UserNotFound;
 import com.dudamorais.eshop.user.User;
@@ -26,6 +28,9 @@ public class ProductService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ProductTypeRepository productTypeRepository;
     
     public Product getProduct(UUID id){
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFound("Product not found"));
@@ -37,9 +42,9 @@ public class ProductService {
 
     public ResponseEntity<Map<String, String>> createProduct(CreateProductDTO createProductDTO){
         User user = userRepository.findById(createProductDTO.userId()).orElseThrow(() -> new UserNotFound("User not found"));
-
+        ProductType productType = productTypeRepository.findById(createProductDTO.type()).orElseThrow(() -> new ProductNotFound("type of product not found"));
         try{
-            Product newProduct = new Product(user, createProductDTO);
+            Product newProduct = new Product(user, createProductDTO, productType);
             
             List<SizeAndQuantity> sizesAndQuantities = createProductDTO.sizeAndQuantities().stream()
                 .map(sizeAndQuantityDTO -> new SizeAndQuantity(

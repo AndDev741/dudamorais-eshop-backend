@@ -45,7 +45,7 @@ public class Product {
     private double price;
 
     @ManyToOne
-    @JoinColumn(name = "type_id", nullable = false)
+    @JoinColumn(name = "type_id", nullable = true)
     private ProductType type;
 
     @Column(nullable = false)
@@ -62,12 +62,12 @@ public class Product {
     @Column
     private ArrayList<String> otherPicturesUrl;
 
-    public Product(User user, CreateProductDTO createProductDTO){
+    public Product(User user, CreateProductDTO createProductDTO, ProductType type){
         setUser(user);
         setName(createProductDTO.name());
         setDescription(createProductDTO.description());
         setPrice(createProductDTO.price());
-        setType(createProductDTO.type());
+        setType(type);
         setMainPictureUrl(createProductDTO.mainPictureUrl());
         setOtherPicturesUrl(createProductDTO.otherPicturesUrl());
     }
