@@ -27,6 +27,7 @@ import com.dudamorais.eshop.domain.dto.EditProductDTO;
 import com.dudamorais.eshop.domain.dto.SizeAndQuantityDTO;
 import com.dudamorais.eshop.domain.sizeAndQuantity.SizeAndQuantity;
 import com.dudamorais.eshop.domain.type.ProductType;
+import com.dudamorais.eshop.domain.type.ProductTypeRepository;
 import com.dudamorais.eshop.exceptions.ProductNotFound;
 import com.dudamorais.eshop.exceptions.UserNotFound;
 import com.dudamorais.eshop.user.User;
@@ -40,6 +41,9 @@ public class ProductServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private ProductTypeRepository productTypeRepository;
 
     @InjectMocks
     private ProductService productService;
@@ -83,11 +87,12 @@ public class ProductServiceTest {
     public void shouldCreateSuccessfullyAProduct(){
         ArrayList<SizeAndQuantityDTO> sizeAndQuantityDTOs = new ArrayList<>();
 
-        CreateProductDTO createProductDTO = new CreateProductDTO(userId, "product", "Product description", 50.60, type, sizeAndQuantityDTOs, "url.com", null);
+        CreateProductDTO createProductDTO = new CreateProductDTO(userId, "product", "Product description", 50.60, typeId, sizeAndQuantityDTOs, "url.com", null);
         ResponseEntity<Map<String, String>> sucessResponse = ResponseEntity.ok().body(Map.of(
         "success", "Product Created Successfully"));
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(productTypeRepository.findById(typeId)).thenReturn(Optional.of(type));
 
         ResponseEntity<Map<String, String>> assertResponse = productService.createProduct(createProductDTO);
 
