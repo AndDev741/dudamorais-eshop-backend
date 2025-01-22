@@ -3,12 +3,15 @@ package com.dudamorais.eshop.controllers;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +21,7 @@ import org.springframework.web.util.UriUtils;
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.dudamorais.eshop.domain.Product;
 import com.dudamorais.eshop.domain.ProductService;
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
 
@@ -66,6 +70,11 @@ public class ProductController {
         }catch(Exception e){
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
+    }
+
+    @GetMapping("/get")
+    public ArrayList<Product> getProducts(){
+        return productService.getProducts(UUID.fromString("2eeec306-1118-40a6-8f14-bf1c791d45b7"));
     }
 
     @PostMapping()
