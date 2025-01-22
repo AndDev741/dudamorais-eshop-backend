@@ -10,6 +10,7 @@ import com.dudamorais.eshop.domain.dto.CreateProductDTO;
 import com.dudamorais.eshop.domain.sizeAndQuantity.SizeAndQuantity;
 import com.dudamorais.eshop.domain.type.ProductType;
 import com.dudamorais.eshop.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -55,6 +56,7 @@ public class Product {
     @Column(nullable = false)
     private String mainPictureUrl;
 
+    @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

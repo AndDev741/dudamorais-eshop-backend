@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.hibernate.annotations.UuidGenerator;
 
 import com.dudamorais.eshop.domain.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,6 +36,7 @@ public class SizeAndQuantity {
     @Column
     private Integer quantity;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
