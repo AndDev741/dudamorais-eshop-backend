@@ -31,6 +31,7 @@ public class ProductService {
 
     @Autowired
     private ProductTypeRepository productTypeRepository;
+
     
     public Product getProduct(UUID id){
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFound("Product not found"));
@@ -65,13 +66,26 @@ public class ProductService {
 
     public ResponseEntity<Map<String, String>> editProduct(EditProductDTO editProductDTO){
         Product editProduct = productRepository.findById(editProductDTO.productId()).orElseThrow(() -> new ProductNotFound("Product not found"));
+        ProductType productType = productTypeRepository.findById(editProductDTO.type()).orElseThrow(() -> new ProductNotFound("type of product not found"));
+
 
         editProduct.setName(editProductDTO.name());
         editProduct.setDescription(editProductDTO.description());
         editProduct.setPrice(editProductDTO.price());
-        editProduct.setType(editProductDTO.type());
+        editProduct.setType(productType);
         editProduct.setMainPictureUrl(editProductDTO.mainPictureURL());
         editProduct.setOtherPicturesUrl(editProductDTO.otherPicturesURL());
+
+        editProduct.getSizeAndQuantity().clear();
+        
+        editProductDTO.sizeAndQuantities().forEach(sizeAndQuantityDTO -> {
+            SizeAndQuantity sizeAndQuantity = new SizeAndQuantity(
+                sizeAndQuantityDTO.size(),
+                sizeAndQuantityDTO.quantity(),
+                editProduct
+            );
+            editProduct.addSizeAndQuantity(sizeAndQuantity);
+        });
 
         try{
             productRepository.save(editProduct);
