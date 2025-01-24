@@ -102,10 +102,12 @@ public class ProductServiceTest {
 
     @Test
     public void shouldEditAProductSuccessfully(){
-        EditProductDTO editProductDTO = new EditProductDTO(productId, "editedName", "editedDescription", 50.50, type, "newUrl.com", null);
+        ArrayList<SizeAndQuantityDTO> sizeAndQuantityDTOs = new ArrayList<>();
+        EditProductDTO editProductDTO = new EditProductDTO(productId, "editedName", "editedDescription", 50.50, typeId, sizeAndQuantityDTOs,"newUrl.com", null, List.of());
         ResponseEntity<Map<String, String>> successResponse = ResponseEntity.ok().body(Map.of("success", "Product edited successfully"));
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
+        when(productTypeRepository.findById(typeId)).thenReturn(Optional.of(type));
         
         ResponseEntity<Map<String, String>> assertResponse = productService.editProduct(editProductDTO);
 
