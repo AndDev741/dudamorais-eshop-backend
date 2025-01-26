@@ -23,6 +23,7 @@ import com.dudamorais.eshop.domain.Product;
 import com.dudamorais.eshop.domain.ProductRepository;
 import com.dudamorais.eshop.domain.ProductService;
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
+import com.dudamorais.eshop.domain.dto.DeleteProductDTO;
 import com.dudamorais.eshop.domain.dto.EditProductDTO;
 import com.dudamorais.eshop.domain.dto.SizeAndQuantityDTO;
 import com.dudamorais.eshop.domain.sizeAndQuantity.SizeAndQuantity;
@@ -121,7 +122,7 @@ public class ProductServiceTest {
 
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
 
-        ResponseEntity<Map<String, String>> assertResponse = productService.deleteProduct(productId);
+        ResponseEntity<Map<String, String>> assertResponse = productService.deleteProduct(new DeleteProductDTO(productId, List.of()));
 
         assertEquals(successResponse.getStatusCode(), assertResponse.getStatusCode());
         assertEquals(successResponse.getBody(), assertResponse.getBody());
