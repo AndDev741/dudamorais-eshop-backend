@@ -11,8 +11,11 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +27,8 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.dudamorais.eshop.domain.Product;
 import com.dudamorais.eshop.domain.ProductService;
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
+import com.dudamorais.eshop.domain.dto.DeleteProductDTO;
+import com.dudamorais.eshop.domain.dto.EditProductDTO;
 
 
 
@@ -80,5 +85,15 @@ public class ProductController {
     @PostMapping()
     public ResponseEntity<Map<String, String>> createProduct(@RequestBody CreateProductDTO createProductDTO){
         return productService.createProduct(createProductDTO);
+    }
+
+    @PutMapping()
+    public ResponseEntity<Map<String, String>> editProduct(@RequestBody EditProductDTO editProductDTO){
+        return productService.editProduct(editProductDTO);
+    } 
+
+    @PostMapping(value = "/delete")
+    public ResponseEntity<Map<String, String>> deleteProduct(@RequestBody DeleteProductDTO dto ){
+        return productService.deleteProduct(dto);
     }
 }
