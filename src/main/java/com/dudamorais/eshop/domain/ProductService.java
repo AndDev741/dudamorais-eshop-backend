@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.dudamorais.eshop.aws.AmazonS3Service;
 import com.dudamorais.eshop.domain.dto.CreateProductDTO;
+import com.dudamorais.eshop.domain.dto.DeleteProductDTO;
 import com.dudamorais.eshop.domain.dto.EditProductDTO;
 import com.dudamorais.eshop.domain.sizeAndQuantity.SizeAndQuantity;
 import com.dudamorais.eshop.domain.type.ProductType;
@@ -32,6 +34,8 @@ public class ProductService {
     @Autowired
     private ProductTypeRepository productTypeRepository;
 
+    @Autowired
+    private AmazonS3Service amazonS3Service;
     
     public Product getProduct(UUID id){
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFound("Product not found"));
@@ -68,6 +72,11 @@ public class ProductService {
         Product editProduct = productRepository.findById(editProductDTO.productId()).orElseThrow(() -> new ProductNotFound("Product not found"));
         ProductType productType = productTypeRepository.findById(editProductDTO.type()).orElseThrow(() -> new ProductNotFound("type of product not found"));
 
+        if(editProductDTO.oldUrls().size() > 0){
+            editProductDTO.oldUrls().forEach((oldUrl) -> {
+                amazonS3Service.deleteFile(oldUrl);
+            });
+        }
 
         editProduct.setName(editProductDTO.name());
         editProduct.setDescription(editProductDTO.description());
@@ -95,9 +104,11 @@ public class ProductService {
         }
     }
 
-    public ResponseEntity<Map<String, String>> deleteProduct(UUID productId){
-        Product product = getProduct(productId);
-
+    public ResponseEntity<Map<String, String>> deleteProduct(DeleteProductDTO dto){
+        Product product = getProduct(dto.productId());
+        dto.picturesToDelete().forEach((picture) -> {
+            amazonS3Service.deleteFile(picture);
+        });
         try{
             productRepository.delete(product);
             return ResponseEntity.ok(Map.of("success", "Deleted successfully"));
