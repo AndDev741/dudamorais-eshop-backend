@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,14 +26,17 @@ import com.dudamorais.eshop.domain.type.ProductTypeService;
 public class TypeController {
     private final ProductTypeService productTypeService;
 
+    @Value("${idUser}")
+    private String userId;
+
     @Autowired
     public TypeController(ProductTypeService productTypeService){
         this.productTypeService = productTypeService;
     }
 
-    @GetMapping(value = "/{userId}")
-    public List<ProductType> getTypes(@PathVariable UUID userId){
-        return productTypeService.getTypes(userId);
+    @GetMapping()
+    public List<ProductType> getTypes(){
+        return productTypeService.getTypes(UUID.fromString(userId));
     }
 
     @PostMapping

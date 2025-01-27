@@ -38,6 +38,9 @@ public class ProductController {
 
     private final ProductService productService;
 
+    @Value("${idUser}")
+    private String userId;
+
     @Value("${aws.s3.bucket}")
     private String bucketName;
 
@@ -77,7 +80,7 @@ public class ProductController {
 
     @GetMapping("/get")
     public ArrayList<Product> getProducts(){
-        return productService.getProducts(UUID.fromString("2eeec306-1118-40a6-8f14-bf1c791d45b7"));
+        return productService.getProducts(UUID.fromString(userId));
     }
 
     @PostMapping()
