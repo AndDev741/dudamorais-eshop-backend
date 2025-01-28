@@ -34,7 +34,7 @@ public class TypeController {
         this.productTypeService = productTypeService;
     }
 
-    @GetMapping()
+    @GetMapping(value = "/get")
     public List<ProductType> getTypes(){
         return productTypeService.getTypes(UUID.fromString(userId));
     }
